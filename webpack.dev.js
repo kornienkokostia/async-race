@@ -10,6 +10,7 @@ module.exports = merge(common, {
       directory: path.resolve(path.join(__dirname, '/')),
     },
     compress: true,
-    port: 3001,
+    port: 3627,
   },
+  
 });

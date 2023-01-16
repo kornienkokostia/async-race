@@ -32,6 +32,11 @@ html {
   scroll-behavior: smooth;
 }
 
+a {
+  text-decoration: none;
+  color: #ffffff;
+}
+
 body {
   background: #000000;
   color: #ffffff;
@@ -44,6 +49,93 @@ h1 {
   margin: 0;
 }
 
+.btn {
+  height: 37px;
+  background-color: #1c1c1e;
+  font-family: "SF-Pro-Display-Medium";
+  font-size: 14px;
+  width: 145px;
+  cursor: pointer;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  border-radius: 9px;
+  outline: none;
+  border: none;
+  -webkit-transition: -webkit-filter 0.2s;
+  transition: -webkit-filter 0.2s;
+  transition: filter 0.2s;
+  transition: filter 0.2s, -webkit-filter 0.2s;
+}
+.btn:active {
+  -webkit-filter: brightness(50%);
+          filter: brightness(50%);
+}
+.btn > span {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.input-text {
+  width: 200px;
+  height: auto;
+  background-color: #1c1c1e;
+  border-radius: 9px;
+  font-size: 14px;
+  color: #ffffff;
+  caret-color: #0584ff;
+  padding: 0 10px;
+  width: 285px;
+  outline: none;
+  border: none;
+}
+.input-text::-webkit-input-placeholder {
+  color: #9898a0;
+}
+.input-text::-moz-placeholder {
+  color: #9898a0;
+}
+.input-text:-ms-input-placeholder {
+  color: #9898a0;
+}
+.input-text::-ms-input-placeholder {
+  color: #9898a0;
+}
+.input-text::placeholder {
+  color: #9898a0;
+}
+
+.input-color {
+  height: 34px;
+  width: 50px;
+  -webkit-appearance: none;
+  border: none;
+  cursor: pointer;
+}
+.input-color::-webkit-color-swatch-wrapper {
+  padding: 0;
+  border: none;
+}
+.input-color::-webkit-color-swatch {
+  border: none;
+}
+.input-color-wrapper {
+  position: relative;
+  overflow: hidden;
+  height: auto;
+  width: auto;
+  border-radius: 9px;
+  border: 2px solid #1c1c1e;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -53,4 +145,235 @@ h1 {
 #current-page {
   width: 100%;
   height: 100%;
+}
+
+.garage-header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  padding: 20px;
+  row-gap: 20px;
+}
+.garage-header-btns {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-column-gap: 15px;
+     -moz-column-gap: 15px;
+          column-gap: 15px;
+}
+.garage-create, .garage-update {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-column-gap: 15px;
+     -moz-column-gap: 15px;
+          column-gap: 15px;
+  height: 37px;
+}
+.garage-create-btn, .garage-update-btn {
+  color: #ffffff;
+  font-family: "SF-Pro-Display-Regular";
+}
+.garage-generate-cars-btn {
+  color: #ffffff;
+  width: 214px;
+}
+.garage-race-btn img {
+  width: 20.64px;
+}
+.garage-reset-btn img {
+  width: 14.4px;
+}
+.garage-cars-wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  padding: 20px;
+}
+.garage-cars-title {
+  font-size: 24px;
+  font-family: "SF-Pro-Display-Semibold";
+}
+.garage-cars-page-num {
+  font-size: 17px;
+  margin-top: 10px;
+}
+.garage-car {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  padding: 10px 0;
+}
+.garage-car-header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+.garage-car-header-btn {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+}
+.garage-car-header-btn-img {
+  width: 20px;
+  height: 20px;
+}
+.garage-car-header-btn:active {
+  -webkit-filter: brightness(50%);
+          filter: brightness(50%);
+}
+.garage-car-name {
+  font-size: 17px;
+  font-family: "SF-Pro-Display-Semibold";
+  margin-right: 30px;
+}
+.garage-car-body {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  margin-top: 10px;
+  height: 50px;
+  border-bottom: 2px dashed #6b6c6f;
+}
+.garage-car-state {
+  width: 50%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  cursor: pointer;
+  height: 30px;
+  z-index: 3;
+}
+.garage-car-state-wrapper {
+  position: relative;
+  width: 70px;
+  height: 30px;
+  background-color: #343536;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  font-size: 17px;
+  border-radius: 7px;
+  margin-right: 20px;
+}
+.garage-car-state-cover {
+  position: absolute;
+  background-color: #6b6c6f;
+  width: 33px;
+  height: 27px;
+  left: 1.5px;
+  border-radius: 6px;
+  -webkit-transform: translateX(0);
+          transform: translateX(0);
+  -webkit-transition: -webkit-transform 0.3s;
+  transition: -webkit-transform 0.3s;
+  transition: transform 0.3s;
+  transition: transform 0.3s, -webkit-transform 0.3s;
+}
+.garage-car-state:nth-child(1) {
+  margin-left: 0.5px;
+}
+.garage-car-state:nth-child(2) {
+  margin-right: 0.5px;
+}
+.garage-car-state:nth-child(2).active ~ .garage-car-state-cover {
+  -webkit-transform: translateX(34px);
+          transform: translateX(34px);
+}
+.garage-car-model {
+  -ms-flex-item-align: end;
+      align-self: flex-end;
+  width: 110px;
+  height: 34px;
+}
+.garage-car-model svg {
+  width: 100%;
+  height: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+.garage-car-finish {
+  position: relative;
+  height: 34px;
+  -ms-flex-item-align: end;
+      align-self: flex-end;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin-left: auto;
+  margin-right: 150px;
+}
+
+.header-wrapper {
+  width: calc(100% - 40px);
+  padding: 20px;
+}
+.header-logo {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  font-size: 24px;
+  font-family: "SF-Pro-Display-Semibold";
+  margin-bottom: 20px;
+}
+.header-nav-btns {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-column-gap: 15px;
+     -moz-column-gap: 15px;
+          column-gap: 15px;
+}
+.header-btn {
+  color: #0584ff;
+  -webkit-column-gap: 6px;
+     -moz-column-gap: 6px;
+          column-gap: 6px;
+}
+.header-btn-img {
+  height: 12px;
+}
+.header-btn-garage img {
+  width: 15.13px;
+}
+.header-btn-winners img {
+  width: 10.67px;
 }

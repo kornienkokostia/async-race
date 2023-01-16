@@ -5,6 +5,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
+  
   mode: 'development',
   entry: path.resolve(__dirname, 'src', 'index.ts'),
   output: {
@@ -34,16 +35,16 @@ module.exports = {
         type: 'asset/resource',
         generator: {
           filename: './assets/fonts/[name][ext]'
-        }
+        } 
       },
       {
         test: /\.(jpe?g|png|gif|svg|ico)$/,
         type: 'asset/resource',
         generator: {
-          filename: 'assets/images/[name][ext]'
-        }
-      },
-
+          filename: 'assets/images/icons/[name][ext]'
+        } 
+      },     
+      
     ],
   },
   plugins: [
@@ -71,4 +72,5 @@ module.exports = {
       filename: '[name].css',
     }),
   ],
+  
 };
