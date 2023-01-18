@@ -1,5 +1,6 @@
 import Component from '../../templates/components';
 import AppState from '../app-state';
+import carNames from '../car-names/car-names';
 import DB from '../db';
 
 export default class Garage extends Component {
@@ -7,7 +8,7 @@ export default class Garage extends Component {
     super(tagName, className);
   }
 
-  private currentPage: number = 1
+  private winner = ''
 
   createGarageHeader(){
     const garageHeader = this.elFactory('div', {class: 'garage-header'})
@@ -15,26 +16,31 @@ export default class Garage extends Component {
     const garageCreate = this.elFactory('div', {class: 'garage-create'})
 
     const garageCreateInput = this.elFactory('input', {class: 'garage-create-input input-text', type: 'text', 
-      placeholder: 'Car name'})
+      placeholder: 'Car name', value: AppState.createInputText})
     
     const garageCreateColorPicker = this.elFactory('input', {class: 'garage-create-color input-color',
-      type: 'color', value: '#7dc1ff'}) 
+      type: 'color', value: AppState.createInputColor}) 
     const garageCreateColorPickerWrapper = this.elFactory('div', 
       {class: 'garage-create-color-wrapper input-color-wrapper'}, garageCreateColorPicker)  
 
     const createBtn = this.elFactory('button', {class: 'garage-create-btn btn'})
     createBtn.textContent = 'Create'
 
-    createBtn.addEventListener('click', async () => {
-      const nameInput = document.querySelector('.garage-create-input') as HTMLInputElement
-      if (nameInput.value !== '') {
-        const colorInput = document.querySelector('.garage-create-color') as HTMLInputElement
-        await DB.addCar({name: nameInput.value, color: colorInput.value})
-        document.querySelector('.garage-cars')!.innerHTML = ''
+    garageCreateInput.addEventListener('input', () => {
+      AppState.createInputText = garageCreateInput.value
+    })
+    garageCreateColorPicker.addEventListener('input', () => {
+      AppState.createInputColor = garageCreateColorPicker.value
+    })
+
+    createBtn.addEventListener('click', () => {
+      if (garageCreateInput.value !== '') {
+        DB.addCar({name: garageCreateInput.value, color: garageCreateColorPicker.value})
         this.updateGarageAllCars()
         this.updateGarageTitle()
+        garageCreateInput.value = ''
+        AppState.numOfCars++
       }
-      
     })
 
     garageCreate.append(garageCreateInput, garageCreateColorPickerWrapper, createBtn)
@@ -42,15 +48,32 @@ export default class Garage extends Component {
     const garageUpdate = this.elFactory('div', {class: 'garage-update'})
 
     const garageUpdateInput = this.elFactory('input', {class: 'garage-update-input input-text', type: 'text', 
-      placeholder: 'New car name'})
+      placeholder: 'New car name', value: AppState.updateInputText})
     
     const garageUpdateColorPicker = this.elFactory('input', {class: 'garage-update-color input-color',
-      type: 'color', value: '#00c2bb'}) 
+      type: 'color', value: AppState.updateInputColor}) 
     const garageUpdateColorPickerWrapper = this.elFactory('div', 
       {class: 'garage-update-color-wrapper input-color-wrapper'}, garageUpdateColorPicker)  
 
     const updateBtn = this.elFactory('button', {class: 'garage-update-btn btn'})
     updateBtn.textContent = 'Update'
+
+    garageUpdateInput.addEventListener('input', () => {
+      AppState.updateInputText = garageUpdateInput.value
+    })
+    garageUpdateColorPicker.addEventListener('input', () => {
+      AppState.updateInputColor = garageUpdateColorPicker.value
+    })
+
+    updateBtn.addEventListener('click', () => {
+      const carId = garageUpdateInput.getAttribute('edit-car-id') as string
+      if (carId) {
+        DB.updateCar({name: garageUpdateInput.value, color: garageUpdateColorPicker.value}, +carId)
+        this.updateGarageAllCars()
+        garageUpdateInput.value = ''
+        garageUpdateInput.removeAttribute('edit-car-id')
+      }
+    })
 
     garageUpdate.append(garageUpdateInput, garageUpdateColorPickerWrapper, updateBtn)
 
@@ -62,18 +85,88 @@ export default class Garage extends Component {
     raceBtnSpan.textContent = 'Race'
     const raceBtn = this.elFactory('button', {class: 'header-btn garage-race-btn btn'}, 
       raceBtnImg, raceBtnSpan)
-    raceBtn.ondragstart = () => false;
+    raceBtnImg.ondragstart = () => false;
+
+    raceBtn.addEventListener('click', () => {
+      document.querySelector('.garage-reset-btn')?.removeAttribute('disabled')
+      document.querySelector('.garage-race-btn')?.setAttribute('disabled', '')
+      const cars = Array.from(document.querySelectorAll('.garage-car'))
+
+      cars.map(el => {
+        const carStateP = el.children[1].children[0].children[0]
+        const carStateD = el.children[1].children[0].children[1]
+        const carId = el.getAttribute('car-id') as string
+        const carModel = el.children[1].children[1] as HTMLDivElement
+        const carName = el.children[0].children[0].textContent as string
+
+        if (!carStateP.classList.contains('active')) {
+          carStateP.classList.toggle('active')
+          carStateD.classList.toggle('active')
+          carModel.style.animation = 'none'
+          this.stopCarEngine(+carId)
+        }
+
+        carStateP.classList.toggle('active')
+        carStateD.classList.toggle('active')
+
+        this.startCarEngine(+carId, carModel, carName)
+      })
+      
+      
+    })
 
     const resetBtnImg = this.elFactory('img', {class: 'header-btn-img', 
       src: './assets/images/icons/reset-btn.svg', alt: 'header-btn-img'}) 
     const resetBtnSpan = this.elFactory('span', {})  
     resetBtnSpan.textContent = 'Reset'
-    const resetBtn = this.elFactory('button', {class: 'header-btn garage-reset-btn btn'}, 
+    const resetBtn = this.elFactory('button', {class: 'header-btn garage-reset-btn btn', disabled: ''}, 
       resetBtnImg, resetBtnSpan)
-    raceBtn.ondragstart = () => false;
+    resetBtnImg.ondragstart = () => false;
+
+    resetBtn.addEventListener('click', () => {
+      document.querySelector('.garage-reset-btn')?.setAttribute('disabled', '')
+      document.querySelector('.garage-race-btn')?.removeAttribute('disabled')
+      const cars = Array.from(document.querySelectorAll('.garage-car'))
+
+      cars.map(el => {
+        const carStateP = el.children[1].children[0].children[0]
+        const carStateD = el.children[1].children[0].children[1]
+
+        if (!carStateP.classList.contains('active')) {
+          carStateP.classList.toggle('active')
+          carStateD.classList.toggle('active')
+
+          const carId = el.getAttribute('car-id') as string
+          const carModel = el.children[1].children[1] as HTMLDivElement
+          carModel.style.animation = 'none'
+          
+          this.stopCarEngine(+carId)
+        }
+        
+      })
+    })
 
     const generateCarsBtn = this.elFactory('button', {class: 'garage-generate-cars-btn btn'})
     generateCarsBtn.textContent = 'Generate cars'
+
+    const cars = carNames
+    
+    const randomNum = (min: number, max: number) => Math.floor(Math.random() * (max - min)) + min
+  
+    generateCarsBtn.addEventListener('click', () => {
+      for (let i = 0; i < 100; i++) {
+        const randomNumName = randomNum(0, cars.length)
+        const carName = cars[randomNumName].brand
+        const carModel = cars[randomNumName].models[randomNum(0, cars[randomNumName].models.length)]
+        const randomColor = (Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0');
+        DB.addCar({name: `${carName} ${carModel}`, color: `#${randomColor}`})
+      }
+      
+      this.updateGarageAllCars()
+      this.updateGarageTitle()
+      
+      AppState.numOfCars += 100
+    })
 
     headerButtons.append(raceBtn, resetBtn, generateCarsBtn)
     
@@ -88,8 +181,31 @@ export default class Garage extends Component {
     document.querySelector('.cars-count')!.textContent = `${data.length}`
   }
 
+  async startCarEngine(id: number, car: HTMLDivElement, carName: string){
+    const carInfo = await DB.startEngine(id)
+    car.style.animation = `animate ${+carInfo!.distance/+carInfo!.velocity/1000}s linear 0s 1 
+    normal forwards running`
+    
+    const driveMode = await DB.driveMode(id)
+    console.log(driveMode)
+   
+    if (driveMode === 'error') {
+      car.style.animationPlayState = 'paused'   
+    } else {
+      if (this.winner === '') {
+        this.winner = carName
+        console.log(this.winner)
+      }
+    }
+    
+  }
+  async stopCarEngine(id: number){
+    await DB.stopEngine(id)
+  }
+ 
+
   createCar(name: string, color: string, id: number){
-    const garageCar = this.elFactory('div', {class: 'garage-car'})
+    const garageCar = this.elFactory('div', {class: 'garage-car', 'car-id': `${id}`})
     const garageCarHeader = this.elFactory('div', {class: 'garage-car-header'})
 
     const garageCarName = this.elFactory('p', {class: 'garage-car-name'})
@@ -99,30 +215,56 @@ export default class Garage extends Component {
       src: './assets/images/icons/edit-car-btn.svg', alt: 'garage-car-edit-btn-img'}) 
     const garageCarEditBtn = this.elFactory('button', {class: 'garage-car-edit-btn garage-car-header-btn'}, 
       garageCarEditImg)
-    garageCarEditBtn.ondragstart = () => false;
+    garageCarEditImg.ondragstart = () => false;
+
+    garageCarEditBtn.addEventListener('click', () => {
+      const editInput = document.querySelector('.garage-update-input') as HTMLInputElement
+      editInput.value = name
+      const editColor = document.querySelector('.garage-update-color') as HTMLInputElement
+      editColor.value = color
+      editInput.setAttribute('edit-car-id', `${id}`)
+    })
 
     const garageCarDeleteImg = this.elFactory('img', {class: 'garage-car-header-btn-img', 
       src: './assets/images/icons/delete-car-btn.svg', alt: 'garage-car-delete-btn-img'}) 
     const garageCarDeleteBtn = this.elFactory('button', {class: 'garage-car-delete-btn garage-car-header-btn'}, 
       garageCarDeleteImg)
-    garageCarDeleteBtn.ondragstart = () => false;
+    garageCarDeleteImg.ondragstart = () => false;
+
+    garageCarDeleteBtn.addEventListener('click', async () => {
+      await DB.deleteCar(id)
+      if (document.querySelector('.garage-cars')?.children.length === 1 && AppState.pageNum > 1) {
+        AppState.pageNum --
+      }
+      this.updateGarageAllCars()
+      this.updateGarageTitle()
+      document.querySelector('.page-count')!.textContent = `${AppState.pageNum}`
+      AppState.numOfCars--
+      const updateInput = document.querySelector('.garage-update-input') as HTMLInputElement
+      updateInput.value = ''
+      updateInput.removeAttribute('edit-car-id')
+    })
 
     garageCarHeader.append(garageCarName, garageCarEditBtn, garageCarDeleteBtn)
 
     const garageCarBody = this.elFactory('div', {class: 'garage-car-body'})
     const garageCarState = this.elFactory('div', {class: 'garage-car-state-wrapper'})
-    const garageCarStateP = this.elFactory('span', {class: 'garage-car-state active'})
+    const garageCarStateP = this.elFactory('span', {class: 'garage-car-state car-state-p active'})
     garageCarStateP.textContent = 'P'
     garageCarStateP.addEventListener('click', () => {
       garageCarStateP.classList.toggle('active')
       garageCarStateD.classList.toggle('active')
+      garageCarModel.style.animation = 'none'
+      this.stopCarEngine(id)
     })
-    const garageCarStateD = this.elFactory('span', {class: 'garage-car-state'})
+    const garageCarStateD = this.elFactory('span', {class: 'garage-car-state car-state-d'})
     garageCarStateD.textContent = 'D'
     const garageCarStateCover = this.elFactory('div', {class: 'garage-car-state-cover'})
     garageCarStateD.addEventListener('click', () => {
       garageCarStateP.classList.toggle('active')
       garageCarStateD.classList.toggle('active')
+
+      this.startCarEngine(id, garageCarModel, name)
     })
     garageCarState.append(garageCarStateP, garageCarStateD, garageCarStateCover)
 
@@ -144,10 +286,25 @@ export default class Garage extends Component {
   }
 
   async updateGarageAllCars(){
-    const data = await DB.getAllCarsWithinPage(this.currentPage)
+    const data = await DB.getAllCarsWithinPage(AppState.pageNum)
+    const allCars = document.querySelector('.garage-cars') as HTMLDivElement
+    allCars.innerHTML = ''
+    
     data.map(el => {
       this.createCar(el.name, el.color, el.id)
     })
+    
+    if (AppState.pageNum === 1) {
+      document.querySelector('.garage-cars-prev-btn')!.setAttribute('disabled', '')
+    } else {
+      document.querySelector('.garage-cars-prev-btn')!.removeAttribute('disabled')
+    }
+    if (AppState.numOfCars < 7 || AppState.numOfCars <= AppState.pageNum * 7) {
+      document.querySelector('.garage-cars-next-btn')!.setAttribute('disabled', '')
+    } else {
+      document.querySelector('.garage-cars-next-btn')!.removeAttribute('disabled')
+    }
+  
   }
 
   createGarageCars(){
@@ -158,13 +315,41 @@ export default class Garage extends Component {
     this.updateGarageTitle()
 
     const garageCarsPageNum = this.elFactory('p', {class: 'garage-cars-page-num'})
-    garageCarsPageNum.innerHTML = `Page <span class="page-count">${this.currentPage}</span>`
+    garageCarsPageNum.innerHTML = `Page <span class="page-count">${AppState.pageNum}</span>`
 
     const garageCars = this.elFactory('div', {class: 'garage-cars'})
     
     this.updateGarageAllCars()
+
+    const paginationBtns = this.elFactory('div', {class: 'garage-cars-pagination-btns'})
+    const prevBtn = this.elFactory('button', {class: 'garage-cars-prev-btn btn'})
+    prevBtn.textContent = 'Prev'
+    const nextBtn = this.elFactory('button', {class: 'garage-cars-next-btn btn'})
+    nextBtn.textContent = 'Next'
+
+    nextBtn.addEventListener('click', () => {
+      AppState.pageNum ++
+      document.querySelector('.page-count')!.textContent = `${AppState.pageNum}`
+      this.updateGarageAllCars()
+      document.querySelector('.garage-reset-btn')?.setAttribute('disabled', '')
+      document.querySelector('.garage-race-btn')?.removeAttribute('disabled')
+    })
+    prevBtn.addEventListener('click', () => {
+      AppState.pageNum --
+      document.querySelector('.page-count')!.textContent = `${AppState.pageNum}`
+      this.updateGarageAllCars()
+      document.querySelector('.garage-reset-btn')?.setAttribute('disabled', '')
+      document.querySelector('.garage-race-btn')?.removeAttribute('disabled')
+    })
     
-    garageCarsWrapper.append(garageCarsTitle, garageCarsPageNum, garageCars)
+    paginationBtns.append(prevBtn, nextBtn)
+
+    paginationBtns.style.opacity = '0'
+    setTimeout(() => {
+      paginationBtns.style.opacity = '1'
+    }, 100)
+    
+    garageCarsWrapper.append(garageCarsTitle, garageCarsPageNum, garageCars, paginationBtns)
 
     return garageCarsWrapper
   }

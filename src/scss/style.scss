@@ -43,6 +43,9 @@ body {
   font-family: 'SF-Pro-Display-Regular';
   height: 100%;
   width: 100%;
+  &::-webkit-scrollbar{
+    display: none;
+  }
 }
 
 
@@ -69,6 +72,10 @@ h1 {
   }
   & > span{
     user-select: none;
+  }
+  &:disabled{
+    filter: brightness(50%);
+    cursor: default;
   }
 }
 
