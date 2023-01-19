@@ -344,6 +344,7 @@ export default class Garage extends Component {
 
     garageCarDeleteBtn.addEventListener('click', async () => {
       await DB.deleteCar(id);
+      await DB.deleteWinner(id)
       if (
         document.querySelector('.garage-cars')?.children.length === 1 &&
         AppState.carsPageNum > 1
@@ -376,7 +377,7 @@ export default class Garage extends Component {
     garageCarStateP.addEventListener('click', () => {
       garageCarStateP.classList.toggle('active');
       garageCarStateD.classList.toggle('active');
-
+      document.querySelector('.garage-race-btn')?.removeAttribute('disabled');
       this.stopCarEngine(id, garageCarModel);
     });
     const garageCarStateD = this.elFactory('span', {
@@ -389,7 +390,7 @@ export default class Garage extends Component {
     garageCarStateD.addEventListener('click', () => {
       garageCarStateP.classList.toggle('active');
       garageCarStateD.classList.toggle('active');
-
+      document.querySelector('.garage-race-btn')?.setAttribute('disabled', '');
       this.startCarEngine(id, garageCarModel, name);
     });
     garageCarState.append(

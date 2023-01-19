@@ -170,4 +170,15 @@ export default class DB {
       console.log(e)
     }   
   }
+  static async deleteWinner(id: number){
+    try {
+      const response = await fetch(`http://127.0.0.1:3000/winners/${id}`, {
+        method: 'DELETE',
+      })
+      const data: {} = await response.json() 
+      return data
+    } catch (e) {
+      console.log(e)
+    }   
+  }
 }
