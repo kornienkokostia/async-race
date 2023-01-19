@@ -215,6 +215,7 @@ h1 {
       -ms-flex-direction: column;
           flex-direction: column;
   padding: 20px;
+  position: relative;
 }
 .garage-cars-title {
   font-size: 24px;
@@ -375,6 +376,16 @@ h1 {
   margin-left: auto;
   margin-right: 150px;
 }
+.garage-winner-message {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  -webkit-transform: translate(-50%, 0);
+          transform: translate(-50%, 0);
+  font-size: 24px;
+  font-family: "SF-Pro-Display-Semibold";
+  color: #0584ff;
+}
 
 @-webkit-keyframes animate {
   from {
@@ -431,4 +442,136 @@ h1 {
 }
 .header-btn-winners img {
   width: 10.67px;
+}
+
+.winners {
+  padding: 20px;
+}
+.winners-title {
+  font-size: 24px;
+  font-family: "SF-Pro-Display-Semibold";
+}
+.winners-page-num {
+  margin-top: 10px;
+  font-size: 17px;
+}
+.winners-table {
+  width: 540px;
+  height: 495.35px;
+  margin: 20px 0;
+}
+.winners-table-header {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  display: grid;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  grid-template-columns: 100px 200px 100px 100px;
+  height: 39.73px;
+  padding-left: 40px;
+  border-top: 1px solid #1f1f20;
+  border-bottom: 1px solid #1f1f20;
+  font-family: "SF-Pro-Display-Semibold";
+}
+.winners-table-header div {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  height: 100%;
+  -webkit-column-gap: 8px;
+     -moz-column-gap: 8px;
+          column-gap: 8px;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+.winners-table-header div.winners-table-header-car, .winners-table-header div.winners-table-header-name {
+  cursor: default;
+}
+.winners-table-header-sort {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  row-gap: 1.5px;
+}
+.winners-table-header-sort img {
+  width: 12px;
+  opacity: 0.4;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
+}
+.winners-table-header-sort img.active {
+  opacity: 1;
+}
+.winners-table-item {
+  display: grid;
+  grid-template-columns: 100px 200px 100px 100px;
+  padding: 10px 0;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  border-bottom: 1px solid #1f1f20;
+  border-top: 1px solid transparent;
+}
+.winners-table-item-wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+.winners-table-item-number {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  color: #8d8d92;
+  width: 40px;
+  padding-right: 5px;
+}
+.winners-table-item-car {
+  height: 18.4px;
+}
+.winners-table-item-car svg {
+  height: 100%;
+}
+.winners-table-item-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 15px;
+}
+.winners-pagination-btns {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin-top: 20px;
+  -webkit-column-gap: 15px;
+     -moz-column-gap: 15px;
+          column-gap: 15px;
+}
+.winners-pagination-btns .btn {
+  color: #0584ff;
+  width: 110px;
 }
