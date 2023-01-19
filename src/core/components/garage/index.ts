@@ -377,7 +377,12 @@ export default class Garage extends Component {
     garageCarStateP.addEventListener('click', () => {
       garageCarStateP.classList.toggle('active');
       garageCarStateD.classList.toggle('active');
-      document.querySelector('.garage-race-btn')?.removeAttribute('disabled');
+      if(Array.from(document.querySelectorAll('.garage-car-state.car-state-d.active')).length === 0){
+        document.querySelector('.garage-race-btn')?.removeAttribute('disabled');
+        document.querySelector('.garage-reset-btn')?.setAttribute('disabled', '');
+      }
+      
+      
       this.stopCarEngine(id, garageCarModel);
     });
     const garageCarStateD = this.elFactory('span', {
