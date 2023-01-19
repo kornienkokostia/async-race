@@ -71,7 +71,7 @@ export default class App {
 
   run() {
     App.container.append(this.header.render());
-    App.container.append(this.footer.render());   
+    App.container.append(this.footer.render());
 
     this.enableRouteChange();
     this.enableRouteChangeReload();
