@@ -1,0 +1,97 @@
+.winners{
+  padding: 20px;
+  &-title{
+    font-size: 24px;
+    font-family: "SF-Pro-Display-Semibold";
+  }
+  &-page-num{
+    margin-top: 10px;
+    font-size: 17px;
+  }
+  &-table{
+    width: 540px;
+    height: 495.35px;
+    margin: 20px 0;
+    &-header{
+      width: fit-content;
+      display: grid;
+      align-items: center;
+      grid-template-columns: 100px 200px 100px 100px;
+      height: 39.73px;
+      padding-left: 40px;
+      border-top: 1px solid #1f1f20;
+      border-bottom: 1px solid #1f1f20;
+      font-family: "SF-Pro-Display-Semibold";
+      & div{
+        display: flex;
+        align-items: center;
+        height: 100%;
+        column-gap: 8px;
+        cursor: pointer;
+        user-select: none;
+        &.winners-table-header-car, &.winners-table-header-name{
+          cursor: default;
+        }
+      } 
+      &-sort{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        row-gap: 1.5px;
+        & img{
+          width: 12px;
+          opacity: .4;
+          user-select: none;
+          transition: .3s;
+          &.active{
+            opacity: 1;
+          }
+        }
+      }
+      
+        
+    }
+    &-item{
+      display: grid;
+      grid-template-columns: 100px 200px 100px 100px;
+      padding: 10px 0;
+      align-items: center;
+      border-bottom: 1px solid #1f1f20;
+      border-top: 1px solid transparent;
+      &-wrapper{
+        display: flex;
+      }
+      &-number{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #8d8d92;
+        width: 40px;
+        padding-right: 5px;
+      }
+      &-car{
+        height: 18.4px;
+        & svg{
+          height: 100%;
+        }
+      }
+      &-name{
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding-right: 15px;
+      }
+    }
+  }
+  &-pagination-btns{
+    display: flex;
+    margin-top: 20px;
+    column-gap: 15px;
+    
+    & .btn{
+      color: #0584ff;
+      width: 110px;
+      
+    }
+  }
+}

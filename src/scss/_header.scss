@@ -1,0 +1,33 @@
+.header{
+  &-wrapper{
+    width: calc(100% - 40px);
+    padding: 20px;
+  }
+  &-logo{
+    display: flex;
+    font-size: 24px;
+    font-family: 'SF-Pro-Display-Semibold';
+    margin-bottom: 20px;
+  }
+  &-nav-btns{
+    display: flex;
+    column-gap: 15px;
+  }
+  &-btn{
+    color: #0584ff;
+    column-gap: 6px;
+    &-img{
+      height: 12px;
+    }
+    &-garage{
+      & img{
+        width: 15.13px;
+      }
+    }
+    &-winners{
+      & img{
+        width: 10.67px;
+      }
+    }
+  }
+}
